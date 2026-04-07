@@ -1,0 +1,157 @@
+-- ============================================================
+--  shadowPanel v1.0 — Seed Data
+--  Developed by Nystic.Shadow | Powered by shadowblack
+-- ============================================================
+
+-- Default settings
+INSERT INTO settings (key, value, type) VALUES
+  ('panel.name',           'shadowPanel',                    'string'),
+  ('panel.tagline',        'Powered by shadowblack',         'string'),
+  ('panel.url',            'http://localhost',               'string'),
+  ('panel.registration',   'true',                           'bool'),
+  ('panel.version',        '1.0.0',                          'string'),
+  ('panel.developed_by',   'Nystic.Shadow',                  'string'),
+  ('panel.support_discord','https://discord.gg/eezz8RAQ9c', 'string'),
+  ('panel.maintenance',    'false',                          'bool'),
+  ('security.max_logins',  '5',                              'int'),
+  ('security.lockout_min', '15',                             'int'),
+  ('smtp.enabled',         'false',                          'bool'),
+  ('smtp.host',            '',                               'string'),
+  ('smtp.port',            '587',                            'int'),
+  ('smtp.from',            'noreply@shadowpanel.local',      'string')
+ON CONFLICT (key) DO NOTHING;
+
+-- Templates
+INSERT INTO templates (name, description, category, icon, docker_image, startup_cmd, default_env, default_ports, default_ram, default_cpu, default_disk, is_featured, sort_order) VALUES
+
+('Minecraft Java (PaperMC)',
+ 'High-performance Minecraft with plugin support. Auto-installs latest PaperMC.',
+ 'game', '⛏',
+ 'itzg/minecraft-server:latest', NULL,
+ '{"EULA":"TRUE","TYPE":"PAPER","MEMORY":"1G","ENABLE_RCON":"true","RCON_PASSWORD":"changeme","MAX_PLAYERS":"20","MOTD":"A shadowPanel Server"}',
+ '[{"internal":25565,"protocol":"tcp"},{"internal":25575,"protocol":"tcp","label":"RCON"}]',
+ 1024, 200, 5120, TRUE, 1),
+
+('Minecraft Bedrock',
+ 'Bedrock edition — supports mobile, console and Windows players.',
+ 'game', '⛏',
+ 'itzg/minecraft-bedrock-server:latest', NULL,
+ '{"EULA":"TRUE","GAMEMODE":"survival","DIFFICULTY":"normal","MAX_PLAYERS":"20"}',
+ '[{"internal":19132,"protocol":"udp"}]',
+ 512, 150, 2048, FALSE, 2),
+
+('CS2 Dedicated Server',
+ 'Counter-Strike 2 server via SteamCMD.',
+ 'game', '🎯',
+ 'joedwards32/cs2:latest', NULL,
+ '{"CS2_SERVERNAME":"shadowPanel CS2","CS2_MAXPLAYERS":"16","CS2_MAP":"de_dust2"}',
+ '[{"internal":27015,"protocol":"tcp"},{"internal":27015,"protocol":"udp"}]',
+ 2048, 400, 20480, TRUE, 3),
+
+('Rust',
+ 'Rust survival server with Oxide plugin support.',
+ 'game', '🦀',
+ 'didstopia/rust-server:latest', NULL,
+ '{"RUST_SERVER_NAME":"shadowPanel Rust","RUST_SERVER_MAXPLAYERS":"50","RUST_UPDATE_ON_BOOT":"1"}',
+ '[{"internal":28015,"protocol":"tcp"},{"internal":28015,"protocol":"udp"},{"internal":28016,"protocol":"tcp","label":"RCON"}]',
+ 4096, 600, 51200, TRUE, 4),
+
+('Valheim',
+ 'Viking survival with BepInEx mods support.',
+ 'game', '⚔️',
+ 'lloesche/valheim-server:latest', NULL,
+ '{"SERVER_NAME":"shadowPanel Valheim","WORLD_NAME":"shadowworld","SERVER_PASS":"changeme","SERVER_PUBLIC":"1"}',
+ '[{"internal":2456,"protocol":"udp"},{"internal":2457,"protocol":"udp"}]',
+ 2048, 300, 10240, FALSE, 5),
+
+('Node.js App',
+ 'Node.js application server — paste your git repo and deploy instantly.',
+ 'webapp', '⬡',
+ 'node:20-alpine',
+ 'sh -c "cd /app && npm install && npm start"',
+ '{"NODE_ENV":"production","PORT":"3000"}',
+ '[{"internal":3000,"protocol":"tcp"}]',
+ 512, 100, 2048, TRUE, 10),
+
+('Python (FastAPI / Flask / Django)',
+ 'Python web app with Gunicorn WSGI server.',
+ 'webapp', '🐍',
+ 'python:3.12-slim',
+ 'sh -c "cd /app && pip install -r requirements.txt && gunicorn app:app -b 0.0.0.0:8000 -w 2"',
+ '{"PYTHONUNBUFFERED":"1","PORT":"8000"}',
+ '[{"internal":8000,"protocol":"tcp"}]',
+ 256, 100, 2048, FALSE, 11),
+
+('Next.js App',
+ 'Next.js React framework with SSR, ISR, and static generation.',
+ 'webapp', '▲',
+ 'node:20-alpine',
+ 'sh -c "cd /app && npm install && npm run build && npm start"',
+ '{"NODE_ENV":"production","PORT":"3000","NEXT_TELEMETRY_DISABLED":"1"}',
+ '[{"internal":3000,"protocol":"tcp"}]',
+ 512, 150, 3072, TRUE, 12),
+
+('Discord Bot (Node.js)',
+ 'Discord.js bot with persistent volume storage.',
+ 'bot', '🤖',
+ 'node:20-alpine',
+ 'sh -c "cd /app && npm install && node index.js"',
+ '{"NODE_ENV":"production","DISCORD_TOKEN":"YOUR_TOKEN_HERE"}',
+ '[{"internal":3000,"protocol":"tcp"}]',
+ 256, 50, 1024, TRUE, 20),
+
+('WordPress',
+ 'Self-hosted WordPress with PHP 8.2 and Apache.',
+ 'web', '🔵',
+ 'wordpress:php8.2-apache',
+ NULL,
+ '{"WORDPRESS_DB_HOST":"","WORDPRESS_DB_USER":"wp","WORDPRESS_DB_PASSWORD":"changeme","WORDPRESS_DB_NAME":"wordpress"}',
+ '[{"internal":80,"protocol":"tcp"}]',
+ 512, 100, 5120, TRUE, 30),
+
+('Static Site (Nginx)',
+ 'Ultra-fast static website or SPA hosting with Nginx.',
+ 'web', '🌐',
+ 'nginx:alpine',
+ NULL,
+ '{}',
+ '[{"internal":80,"protocol":"tcp"}]',
+ 64, 50, 1024, FALSE, 31),
+
+('MySQL 8.0',
+ 'MySQL database server with persistent storage.',
+ 'database', '🗄',
+ 'mysql:8.0',
+ NULL,
+ '{"MYSQL_ROOT_PASSWORD":"changeme","MYSQL_DATABASE":"mydb","MYSQL_USER":"user","MYSQL_PASSWORD":"changeme"}',
+ '[{"internal":3306,"protocol":"tcp"}]',
+ 512, 100, 10240, FALSE, 40),
+
+('PostgreSQL 16',
+ 'PostgreSQL database with persistent storage.',
+ 'database', '🐘',
+ 'postgres:16-alpine',
+ NULL,
+ '{"POSTGRES_PASSWORD":"changeme","POSTGRES_DB":"mydb","POSTGRES_USER":"user"}',
+ '[{"internal":5432,"protocol":"tcp"}]',
+ 256, 100, 5120, FALSE, 41),
+
+('Redis',
+ 'Redis in-memory cache and message broker.',
+ 'database', '🔴',
+ 'redis:7-alpine',
+ 'redis-server --requirepass changeme',
+ '{}',
+ '[{"internal":6379,"protocol":"tcp"}]',
+ 128, 50, 512, FALSE, 42),
+
+('Custom Docker',
+ 'Deploy any Docker image with full control.',
+ 'custom', '⚡',
+ 'alpine:latest',
+ 'sh',
+ '{}',
+ '[]',
+ 256, 100, 1024, FALSE, 99)
+
+ON CONFLICT DO NOTHING;
